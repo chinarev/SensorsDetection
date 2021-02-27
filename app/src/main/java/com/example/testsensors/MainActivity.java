@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,8 +31,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor senAccelerometer;
     private Sensor senGyroscope;
     private long lastUpdate = 0;
-    private float last_x_acc, last_y_acc, last_z_acc;
+    private float last_x_acc, last_y_acc, last_z_acc, x_gyr, y_gyr, z_gyr;
     private static final int SHAKE_THRESHOLD = 600;
+    String FILE_NAME = "data.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,30 +61,31 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
 
-                float speed = Math.abs(x_acc + y_acc + z_acc - last_x_acc - last_y_acc - last_z_acc)/ diffTime * 10000;
+                float speed = Math.abs(x_acc + y_acc + z_acc - last_x_acc - last_y_acc - last_z_acc) / diffTime * 10000;
 
-                TextView text = (TextView)findViewById(R.id.textView4);
-                text.setText(""+last_x_acc);
-                text = (TextView)findViewById(R.id.textView5);
-                text.setText(""+last_y_acc);
-                text = (TextView)findViewById(R.id.textView6);
-                text.setText(""+last_z_acc);
-                text = (TextView)findViewById(R.id.textView7);
-                text.setText(""+curTime);
-                text = (TextView)findViewById(R.id.textView8);
-                text.setText(""+speed);
+                TextView text = (TextView) findViewById(R.id.textView4);
+                text.setText("" + last_x_acc);
+                text = (TextView) findViewById(R.id.textView5);
+                text.setText("" + last_y_acc);
+                text = (TextView) findViewById(R.id.textView6);
+                text.setText("" + last_z_acc);
+                text = (TextView) findViewById(R.id.textView7);
+                text.setText("" + curTime);
+                text = (TextView) findViewById(R.id.textView8);
+                text.setText("" + speed);
 
                 last_x_acc = x_acc;
                 last_y_acc = y_acc;
                 last_z_acc = z_acc;
 
+
             }
         }
 
         if (mySensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            float x_gyr = sensorEvent.values[0];
-            float y_gyr = sensorEvent.values[1];
-            float z_gyr = sensorEvent.values[2];
+            x_gyr = sensorEvent.values[0];
+            y_gyr = sensorEvent.values[1];
+            z_gyr = sensorEvent.values[2];
 
             TextView text = (TextView) findViewById(R.id.textView9);
             text.setText("" + x_gyr);
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             text.setText("" + z_gyr);
 
         }
+        Handler.saveText(this, FILE_NAME, last_x_acc, last_y_acc, last_z_acc, x_gyr, y_gyr, z_gyr);
     }
 
     @Override
