@@ -57,6 +57,16 @@ public class ObstacleManager {
 
     }
 
+    public boolean playerCollide(RectPlayer player){
+        for(Obstacle ob: obstacles) {
+            if(ob.playerCollide(player)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public void draw(Canvas canvas) {
         for (Obstacle obstacle : obstacles) {
             obstacle.draw(canvas);
