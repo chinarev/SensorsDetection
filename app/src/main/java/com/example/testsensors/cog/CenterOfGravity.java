@@ -52,7 +52,6 @@ public class CenterOfGravity {
     }
 
     public double findCOG(){
-        double humanCOG = sumOfMoments() / Constants.WEIGHT;
-        return humanCOG;
+        return sumOfMoments() / Constants.WEIGHT;
     }
 }
