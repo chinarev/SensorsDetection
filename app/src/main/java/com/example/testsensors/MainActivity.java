@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         Constants.SCREEN_HEIGHT = dm.heightPixels;
 
         setContentView(new GamePanel(this));
+
+        Constants.HEIGHT = 179;
+        Constants.WEIGHT = 78.2;
     }
 
 }
